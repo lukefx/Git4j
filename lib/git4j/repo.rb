@@ -26,6 +26,10 @@ module Git4j
       @git.log
     end
   
+    def branch
+      @git.branch_list
+    end
+  
   end
 
 end

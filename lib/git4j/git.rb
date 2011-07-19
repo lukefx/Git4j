@@ -23,6 +23,15 @@ module Git4j
       commits
     end
   
+    def branch_list
+      branch = @git.branch_list
+      array = Array.new
+      branch.call.each do |b|
+        array << b.get_name
+      end
+      array
+    end
+  
   end
 
 end
