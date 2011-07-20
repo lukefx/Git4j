@@ -38,6 +38,10 @@ module Git4j
       commits.first(options[:limit])
     end
   
+    def inspect
+      %Q{#<Git4j::Commit "#{@id}">}
+    end    
+    
   end
 
 end
