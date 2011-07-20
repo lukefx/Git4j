@@ -1,8 +1,12 @@
 module Git4j
-    
+
+  import org.eclipse.jgit.lib.Repository
+  import org.eclipse.jgit.lib.RepositoryBuilder
+  
   class Repo
   
     attr_accessor :git
+    attr_accessor :repo
     attr_accessor :path
     attr_accessor :working_dir
     attr_reader :bare
@@ -18,16 +22,26 @@ module Git4j
         @bare = true
       end
       
-      @git = RubyGit.new(@path)
+      repo_path = java.io.File.new(@path)
+      @repo = RepositoryBuilder.new().set_git_dir(repo_path).build()
+      @git = RubyGit.new(@repo)
       
     end
   
-    def commits
-      @git.log
+    def self.init(path, options = {})
+      git_options = {:bare => false}.merge(options)
+      repo_path = java.io.File.new(path)
+      repository = RepositoryBuilder.new().set_git_dir(repo_path).build()
+      repository.create(git_options[:bare])
+    end
+  
+    def commits(ref="master", limit=100)
+      options = { :limit => limit }
+      Commit.find_all(@repo, ref, options)
     end
   
     def branch
-      @git.branch_list
+      @repo.get_branch
     end
   
   end

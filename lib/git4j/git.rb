@@ -1,16 +1,14 @@
 module Git4j
 
   import org.eclipse.jgit.api.Git
-  import org.eclipse.jgit.lib.Repository
-  import org.eclipse.jgit.lib.RepositoryBuilder
 
   class RubyGit
   
     attr_accessor :git
+    attr_accessor :repo
   
-    def initialize(path)
-      repo_path = java.io.File.new(path)
-      repository = RepositoryBuilder.new().set_git_dir(repo_path).build()
+    def initialize(repository)
+      @repo = repository
       @git = Git.new(repository)
     end
   

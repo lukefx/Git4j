@@ -1,5 +1,6 @@
 module Git4j
 
+  import org.eclipse.jgit.revwalk.RevWalk
   import org.eclipse.jgit.revwalk.RevCommit
 
   class Commit
@@ -28,7 +29,14 @@ module Git4j
       @short_message = commit.full_message.split("\n").select { |x| !x.strip.empty? }[0] || ''
     end
   
-    
+    def self.find_all(repo, ref, options)
+      walk = RevWalk.new(repo);
+      objHead = repo.resolve(ref)
+      root = walk.parse_commit(objHead)
+      walk.mark_start(root)
+      commits = walk.map { |commit| Commit.new(commit) }
+      commits.first(options[:limit])
+    end
   
   end
 

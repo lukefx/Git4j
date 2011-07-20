@@ -2,4 +2,6 @@
 .bundle
 Gemfile.lock
 pkg/*
+.project
+.buildpath
 test.rb
